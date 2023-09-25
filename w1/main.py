@@ -56,7 +56,8 @@ def revenue_per_region(dp: DataProcessor) -> Dict:
     for row in tqdm(data_reader_gen):
         if row[constants.OutDataColNames.COUNTRY] not in aggregate:
             aggregate[row[constants.OutDataColNames.COUNTRY]] = 0
-        aggregate[row[constants.OutDataColNames.COUNTRY]] += row['TotalPrice']
+        aggregate[row[constants.OutDataColNames.COUNTRY]
+                  ] += dp.to_float(row['TotalPrice'])
 
     return aggregate
     ######################################## YOUR CODE HERE ##################################################
@@ -67,7 +68,8 @@ def get_sales_information(file_path: str) -> Dict:
     dp = DataProcessor(file_path=file_path)
 
     # print stats
-    dp.describe(column_names=[constants.OutDataColNames.UNIT_PRICE, constants.OutDataColNames.TOTAL_PRICE])
+    dp.describe(column_names=[
+                constants.OutDataColNames.UNIT_PRICE, constants.OutDataColNames.TOTAL_PRICE])
 
     # return total revenue and revenue per region
     return {
@@ -78,21 +80,25 @@ def get_sales_information(file_path: str) -> Dict:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Choose from one of these : [tst|sml|bg]")
+    parser = argparse.ArgumentParser(
+        description="Choose from one of these : [tst|sml|bg]")
     parser.add_argument('--type',
                         default='tst',
                         choices=['tst', 'sml', 'bg'],
                         help='Type of data to generate')
     args = parser.parse_args()
 
-    data_folder_path = os.path.join(CURRENT_FOLDER_NAME, '..', constants.DATA_FOLDER_NAME, args.type)
-    files = [str(file) for file in os.listdir(data_folder_path) if str(file).endswith('csv')]
+    data_folder_path = os.path.join(
+        CURRENT_FOLDER_NAME, '..', constants.DATA_FOLDER_NAME, args.type)
+    files = [str(file) for file in os.listdir(
+        data_folder_path) if str(file).endswith('csv')]
 
     output_save_folder = os.path.join(CURRENT_FOLDER_NAME, '..', 'output', args.type,
                                       datetime.now().strftime("%B %d %Y %H-%M-%S"))
     make_dir(output_save_folder)
 
-    file_paths = [os.path.join(data_folder_path, file_name) for file_name in files]
+    file_paths = [os.path.join(data_folder_path, file_name)
+                  for file_name in files]
     revenue_data = [get_sales_information(file_path)
                     for file_path in file_paths]
 
@@ -108,4 +114,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
