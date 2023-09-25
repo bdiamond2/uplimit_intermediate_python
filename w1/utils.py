@@ -117,9 +117,8 @@ class DataReader:
         for n_row, row in enumerate(open(self._fp, "r")):
             row_vals = row.strip('\n').split(self._sep)
 
-            # skip the headers
-            if n_row == 0:
-                continue
+            # I would have skipped the first row for the header but the consuming code
+            # already does that for us I guess
 
             # define the row_vals dictionary
             row = {self.get_column_names()[i]: row_vals[i]
