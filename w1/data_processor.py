@@ -15,7 +15,8 @@ class DataProcessor:
         self._n_rows = 0
 
         self._set_col_names()
-        self.data_reader = DataReader(fp=file_path, sep=self._sep, col_names=self._col_names)
+        self.data_reader = DataReader(
+            fp=file_path, sep=self._sep, col_names=self._col_names)
         self._set_n_rows()
 
     @staticmethod
@@ -80,17 +81,17 @@ class DataProcessor:
         """
         ######################################## YOUR CODE HERE ##################################################
         # get generator from data_reader
-        data_reader_gen = #### [YOUR CODE HERE] ####
+        data_reader_gen = (row for row in self.data_reader)
 
         # skip first row as it is the column name
         _ = next(data_reader_gen)
 
         # initialize aggreate value
-        aggregate = #### [YOUR CODE HERE] ####
+        aggregate = 0
 
         for row in tqdm(data_reader_gen):
             if self.to_float(row[column_name]):
-                aggregate += #### [YOUR CODE HERE] ####
+                aggregate += self.to_float(row[column_name])
 
         return aggregate
         ######################################## YOUR CODE HERE ##################################################
