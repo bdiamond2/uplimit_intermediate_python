@@ -112,19 +112,22 @@ class DataReader:
         }
         """
     ######################################## YOUR CODE HERE ##################################################
-        # output generator -- use 'yield' keyword 
+        # output generator -- use 'yield' keyword
         # generate each row: dictionary comprehension
-        
         for n_row, row in enumerate(open(self._fp, "r")):
             row_vals = row.strip('\n').split(self._sep)
-            
-            # define the row_vals dictionary 
-            row_vals = #### [YOUR CODE HERE] ####
-            row_vals['n_row'] = #### [YOUR CODE HERE] ####
 
-            # return results: 
-            #### [YOUR CODE HERE] ####
-    
+            # skip the headers
+            if n_row == 0:
+                continue
+
+            # define the row_vals dictionary
+            row = {self.get_column_names()[i]: row_vals[i]
+                   for i in range(len(self.get_column_names()))}
+
+            # return results:
+            yield row
+
     ######################################## YOUR CODE HERE ##################################################
 
     def get_file_path(self):
@@ -132,4 +135,3 @@ class DataReader:
 
     def get_column_names(self):
         return self._col_names
-
